@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
+import { Component, OnInit, Renderer2, ElementRef, Input } from '@angular/core';
 import { Chart, ChartType } from 'chart.js/auto';
 
 @Component({
@@ -8,6 +8,12 @@ import { Chart, ChartType } from 'chart.js/auto';
 })
 export class BarChartComponent implements OnInit {
  
+  //Estos inputs las recibimos desde tab3.page.html y se declaran en tab3.page.ts
+  @Input() datosCategorias: number[] = [];
+  @Input() nombresCategorias: string[] = [];
+  @Input() backgroundColorCategorias: string[] = [];
+  @Input() borderColorCategorias: string[] = [];
+  @Input() tipoChartSelected: string = "";
   // Atributo que almacena los datos del chart
   public chart!: Chart;
 
@@ -24,35 +30,53 @@ export class BarChartComponent implements OnInit {
   private inicializarChart() {
     // Destruir el gráfico existente si existe
     this.destroyChart();
+
+    let data = null;
   
-    // datos
-    const data = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [{
-        label: 'My First Dataset',
-        data: [65, 59, 80, 81, 56, 55, 40],
-        fill: false,
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 205, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(201, 203, 207, 0.2)'
-        ],
-        borderColor: [
-          'rgb(255, 99, 132)',
-          'rgb(255, 159, 64)',
-          'rgb(255, 205, 86)',
-          'rgb(75, 192, 192)',
-          'rgb(54, 162, 235)',
-          'rgb(153, 102, 255)',
-          'rgb(201, 203, 207)'
-        ],
-        tension: 0.1
-      }]
-    };
+    if (this.tipoChartSelected === "bar-chart"){
+      // datos
+      data = {
+        labels: this.nombresCategorias,
+        datasets: [{
+          label: 'My First Dataset',
+          data: this.datosCategorias,
+          fill: false,
+          backgroundColor: this.backgroundColorCategorias,
+          borderColor: this.borderColorCategorias,
+          tension: 0.1
+        }]
+      };
+    } else {
+      // datos
+      data = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [{
+          label: 'My First Dataset',
+          data: [65, 59, 80, 81, 56, 55, 40],
+          fill: false,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(201, 203, 207, 0.2)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+            'rgb(201, 203, 207)'
+          ],
+          tension: 0.1
+        }]
+      };
+    }
+    
   
     // Creamos la gráfica
     const canvas = this.renderer.createElement('canvas');
