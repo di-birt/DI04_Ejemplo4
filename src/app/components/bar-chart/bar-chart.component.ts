@@ -1,5 +1,6 @@
 import { Component, OnInit, Renderer2, ElementRef, Input } from '@angular/core';
 import { Chart, ChartType } from 'chart.js/auto';
+import { GestionApiService } from 'src/app/services/gestion-api.service';
 
 @Component({
   selector: 'app-bar-chart',
@@ -8,28 +9,41 @@ import { Chart, ChartType } from 'chart.js/auto';
 })
 export class BarChartComponent implements OnInit {
  
-  //Estos inputs las recibimos desde tab3.page.html y se declaran en tab3.page.ts
+  /*Necesitamos que nuestra aplicación funcione tanto para tab6 como para tab7
+   * En tab6, pasamos estos 5 parámetros mediante parámetros
+   * En tab7, solo se pasan 3 parámetros, datosCategorias y nombresCategorias se recibirán desde la API, pero aunque no recibamos valores 
+   * como parámetro, se hará uso de estas variables Input(), para que todas nuestras tabs funcionen correctamente.
+  */
+  //Estas variables se reciben como parámetro desde tab6, pero no desde tab7.
   @Input() datosCategorias: number[] = [];
   @Input() nombresCategorias: string[] = [];
+
+  //Estas variables se reciben como parámetro tanto de tab6 como de tab7
   @Input() backgroundColorCategorias: string[] = [];
   @Input() borderColorCategorias: string[] = [];
   @Input() tipoChartSelected: string = "";
   // Atributo que almacena los datos del chart
   public chart!: Chart;
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
+  constructor(private el: ElementRef, private renderer: Renderer2, private gestionServiceApi: GestionApiService) {}
  
   ngOnInit(): void {
-    console.log("Ejecuta bar-chart")
+    console.log("Ejecuta bar-chart");
     this.inicializarChart();
-  }
-  ngOnDestroy() {
-    this.destroyChart();
+
+    //Nos suscribimos al observable de tipo BehaviorSubject y cuando este emita un valor, recibiremos una notificación con el nuevo valor.
+    this.gestionServiceApi.datos$.subscribe((datos) => {
+      if (datos != undefined) {
+        //Cuando recibimos un valor actualizamos los arrays de nombre y valor de categorias, para guardar el nombre y su valor en las mismas posiciones del array.
+        this.nombresCategorias.push(datos.categoria);
+        this.datosCategorias.push(datos.totalResults);
+        //Actualizamos el chart con los nuevos valores cada vez que recibimos un valor.
+        this.chart.update();
+      }
+    });
   }
 
   private inicializarChart() {
-    // Destruir el gráfico existente si existe
-    this.destroyChart();
 
     let data = null;
   
@@ -115,10 +129,4 @@ export class BarChartComponent implements OnInit {
     this.chart.canvas.height = 100;
   }
 
-  private destroyChart() {
-    // Destruir el gráfico si existe
-    if (this.chart) {
-      this.chart.destroy();
-    }
-  }
 }

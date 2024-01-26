@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { GestionApiService } from '../services/gestion-api.service';
 
 @Component({
   selector: 'app-tab6',

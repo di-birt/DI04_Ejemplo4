@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { RespuestaNoticias } from '../interfaces/interfaces';
+import { Article, RespuestaNoticias } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,6 @@ export class GestionApiService {
 
   apiKey: string = environment.apiKey;
   apiUrl: string = environment.apiUrl;
-
   //Hacemos uso de BehaviorSubject tipo json (categoria y totalResults o undefined).
   //BehaviorSubject es un tipo especial de Observable que siempre tiene un valor actual y emite ese valor inmediatamente a los nuevos suscriptores. En este caso,
   //emite objetos de tipo "{ categoria: string; totalResults: number } | undefined"
