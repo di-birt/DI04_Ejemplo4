@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { GestionApiService } from '../services/gestion-api.service';
 
@@ -64,8 +63,6 @@ export class Tab7Page implements OnInit {
 
   //Gestionamos el cambio de segmento
   segmentChanged(event: any) {
-    //Añadimos la ruta
-    //this.router.navigate(['/tabs/graficos', event.detail.value]);
     //Recogemos el tipo de chart (bar-chart, line-chart o pie-chart), mediante event.detail.value
     this.tipoDeChartSeleccionado = event.detail.value;
     //En caso de bar-chart, realizamos una llamada al api por cada categoria que tenemos.

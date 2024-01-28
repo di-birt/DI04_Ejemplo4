@@ -17,13 +17,8 @@ export class PieChartComponent implements OnInit {
   ngOnInit(): void {
       this.inicializarChart();
   }
-  ngOnDestroy() {
-    this.destroyChart();
-  }
 
   private inicializarChart(){
-    // Destruir el gráfico existente si existe
-    this.destroyChart();
     
     const data = {
       labels: [
@@ -59,13 +54,6 @@ export class PieChartComponent implements OnInit {
       type: 'pie' as ChartType, // tipo de la gráfica 
       data: data, // datos 
     });
-  }
-
-  private destroyChart() {
-    // Destruir el gráfico si existe
-    if (this.chart) {
-      this.chart.destroy();
-    }
   }
  
 }
