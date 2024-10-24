@@ -49,7 +49,7 @@ export class Tab7Page implements OnInit {
   // Atributos para generar la consulta REST
   // Están almacenados en los ficheros de la carpeta enviroments
   apiKey: string = environment.apiKey;
-  apiUrl: string = environment.apiUrl;  
+  apiUrl: string = environment.apiUrl;
 
   //constructor(private router: Router, public gestionServiceApi: GestionApiService) {}
   constructor(public gestionServiceApi: GestionApiService) {}
